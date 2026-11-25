@@ -66,7 +66,6 @@ def add_topping(topping):
     robot_state['status'] = f'Добавление: {topping_lower}'
     return True, f'Добавлено: {topping_lower}'
 
-
 def bake_pizza():
     if not robot_state['current_pizza']:
         return False, 'В печи пусто, сначала собери пиццу'
