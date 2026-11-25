@@ -1,5 +1,6 @@
 import main
 import views
+import SCYFR
 
 
 def handle_make_pizza():
@@ -32,8 +33,12 @@ def handle_show_status():
 
 
 def handle_restock():
-    mgs = main.restock_ingredients()
-    views.show_message(mgs)
+    password = views.ask_password()
+    if SCYFR.check_admin_password(password):
+        msg = main.restock_ingredients()
+        views.show_message(msg)
+    else:
+        views.show_error('Неверный пароль! Доступ к пополнению запасов запрещён.')
 
 
 def run_robot():
