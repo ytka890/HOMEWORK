@@ -1,44 +1,71 @@
 import time
+
 robot_state = {
     "status": "ожидание заказа",
     "temp": 22,
-    "ingrend": {
-    "тесто":5,
-    "майонез":5,
-    "сыр": 5,
-    "пеперони": 5
-},
-    "current_pizza":[],
+    "ingredients": {
+        "тесто": 5,
+        "соус": 5,
+        "моцарелла": 5,
+        "пармезан": 5,
+        "чеддер": 5,
+        "дорблю": 5,
+        "фета": 5,
+        "ветчина": 5,
+        "бекон": 5,
+        "курица": 5,
+        "колбаски": 5,
+        "креветки": 5,
+        "томаты": 5,
+        "перец": 5,
+        "лук": 5,
+        "руккола": 5,
+        "базилик": 5,
+        "шампиньоны": 5,
+        "маслины": 5,
+        "халапеньо": 5,
+        "ананасы": 5,
+        "огурцы": 5
+    },
+
+    "current_pizza": [],
     "orders_completed": 0,
 }
+Avalable_toppings = ['моцарелла', 'пармезан', 'чеддер', 'дорблю', 'фета', 'ветчина', 'бекон', 'курица', 'колбаски', 'креветки', 'томаты', 'перец', 'лук', 'руккола', 'базилик', 'шампиньоны', 'маслины', 'халапеньо', 'ананасы', 'огурцы']
 
-Avalable_toppings = ['сыр', 'Пеперони']
+
 
 def get_status():
     return robot_state.copy()
 
+
 def check_ingredients():
-    inv = robot_state["ingrend"]
-    return inv["тесто"] > 0 and inv['майонез'] > 0
+    inv = robot_state["ingredients"]
+    return inv["тесто"] > 0 and inv['соус'] > 0
+
 
 def start_pizza():
     if not check_ingredients():
         return False, 'Недостаточно ингредиентов'
-    robot_state['ingredients']['тесто']-=1
-    robot_state['ingredients']['соус']-=1
-    robot_state['current_pizza'] = ['основа из теста','соус']
-    robot_state['status'] = 'Раскатываю тесто и нанесение соуса'
+    robot_state['ingredients']['тесто'] -= 1
+    robot_state['ingredients']['соус'] -= 1
+
+    robot_state['current_pizza'] = ['основа из теста', 'соус']
+    robot_state['status'] = 'Раскатываю Comic-тесто и нанесение соуса'
     return True, 'Основа для пиццы готова'
 
+
 def add_topping(topping):
-    if topping not in Avalable_toppings:
+    topping_lower = topping.lower()
+    if topping_lower not in Avalable_toppings:
         return False, f'Ингредиент {topping} не поддерживается'
-    if robot_state['ingredients'].get(topping, 0) <= 0:
-        return False,f'Закончился ингридиент: {topping}'
-    robot_state['ingredients'][topping] -= 1
-    robot_state['current_pizza'].append(topping)
-    robot_state['status'] = f'Добавление: {topping}'
-    return True, f'Добавлено: {topping}'
+    if robot_state['ingredients'].get(topping_lower, 0) <= 0:
+        return False, f'Закончился ингредиент: {topping}'
+    robot_state['ingredients'][topping_lower] -= 1
+    robot_state['current_pizza'].append(topping_lower)
+    robot_state['status'] = f'Добавление: {topping_lower}'
+    return True, f'Добавлено: {topping_lower}'
+
 
 def bake_pizza():
     if not robot_state['current_pizza']:
@@ -53,8 +80,9 @@ def bake_pizza():
     robot_state['orders_completed'] += 1
     return True, finished_pizza
 
+
 def restock_ingredients():
     for item in robot_state['ingredients']:
         robot_state['ingredients'][item] = 5
     robot_state['status'] = 'Запасы пополнены...'
-    return 'Все  ингредиенты до 5 единиц'
+    return 'Все ингредиенты до 5 единиц'
