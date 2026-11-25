@@ -1,5 +1,6 @@
 import time
 from main import *
+from SCYFR import *
 
 def decorator(inputer):
     def outer(*args, **kwargs):
@@ -66,3 +67,7 @@ def show_finished_pizza(ingredients_list):
     print("Пицца готова !\n"
           f'Состав - {", ".join(ingredients_list)}\n'
           'Приятного аппетита!')
+
+def ask_password():
+    return input('Введите пароль администратора: ').strip()
+
